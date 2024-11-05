@@ -2647,10 +2647,11 @@ f_month(b.libengeped), f_year(b.libengeped), b.pednovo, c.id_origem, c.vlitem, c
 left join pedido_COTADO c on (b.iditem = c.id_origem)
 where b.st in (1,2,6) and b.pednovo in (1,2,3,5)
 and b.prob >= 8 and b.unidade in (3,4);
-
-
-
-/* View: COTACOES_GANHAS_PLA */
+--================================================================================================================
+/**
+    0079
+    Status = ok
+    *//*View:  ORCAMENTO_PREVISTO_PLA*/
 CREATE VIEW COTACOES_GANHAS_PLA(
     ANO,
     MES,
@@ -2660,12 +2661,12 @@ CREATE VIEW COTACOES_GANHAS_PLA(
 AS
 SELECT c.ano , c.mes, SUM(b.VLITEM), SUM(b.VLITEM_APROV), c.parametro
 from cotacoes_meta c left join orcamento_previsto_pla b on (c.ano = b.ano and c.mes = b.mes)
-where c.unid_neg = '3,4' group by c.ano, c.mes, c.parametro
-;
-
-
-
-/* View: COTACOES_GANHAS_PLA_CLIENTE */
+where c.unid_neg = '3,4' group by c.ano, c.mes, c.parametro;
+--================================================================================================================
+/**
+    0080
+    Status = ok
+    *//*View:  COTACOES_GANHAS_PLA_CLIENTE*/
 CREATE VIEW COTACOES_GANHAS_PLA_CLIENTE(
     ANO,
     CODCLI,
@@ -2676,12 +2677,12 @@ CREATE VIEW COTACOES_GANHAS_PLA_CLIENTE(
 AS
 SELECT c.ano , b.codcli, b.nome_cliente, SUM(b.VLITEM), SUM(b.VLITEM_APROV), c.total
 from cotacoes_meta c left join orcamento_previsto_pla b on (c.ano = b.ano and c.mes = b.mes)
-where c.unid_neg = '3,4'  and codcli is not null group by c.ano, b.codcli,b.nome_cliente,  c.total
-;
-
-
-
-/* View: COTACOES_REALIZADAS */
+where c.unid_neg = '3,4'  and codcli is not null group by c.ano, b.codcli,b.nome_cliente,  c.total;
+--================================================================================================================
+/**
+    0081
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS*/
 CREATE VIEW COTACOES_REALIZADAS(
     ANO,
     MES,
@@ -2692,12 +2693,12 @@ AS
 select c.ano, c.mes, c.mes_entrega, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega))
 from estatistica_cotacao c where st IN (1,2,6)
-group by c.ano, c.mes, c.mes_entrega
-;
-
-
-
-/* View: COTACOES_REALIZADAS_CLIENTE */
+group by c.ano, c.mes, c.mes_entrega;
+--================================================================================================================
+/**
+    0082
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS_CLIENTE*/
 CREATE VIEW COTACOES_REALIZADAS_CLIENTE(
     ANO,
     MES,
@@ -2710,12 +2711,12 @@ AS
 select c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega and estatistica_cotacao.codcli = c.codcli))
 from estatistica_cotacao c where st IN (1,2,6)
-group by c.ano, c.mes, c.mes_entrega,c.codcli, c.nome_cliente
-;
-
-
-
-/* View: COTACOES_REALIZADAS_MET */
+group by c.ano, c.mes, c.mes_entrega,c.codcli, c.nome_cliente;
+--================================================================================================================
+/**
+    0082
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS_MET*/
 CREATE VIEW COTACOES_REALIZADAS_MET(
     ANO,
     MES,
@@ -2727,12 +2728,12 @@ select c.ano, c.mes, c.mes_entrega, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega and estatistica_cotacao.unidade in (1,2)))
 from estatistica_cotacao c where st IN (1,2,6)
 and c.unidade in (1,2)
-group by c.ano, c.mes, c.mes_entrega
-;
-
-
-
-/* View: COTACOES_REALIZADAS_MET_CLIENTE */
+group by c.ano, c.mes, c.mes_entrega;
+--================================================================================================================
+/**
+    0083
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS_MET_CLIENTE*/
 CREATE VIEW COTACOES_REALIZADAS_MET_CLIENTE(
     ANO,
     MES,
@@ -2745,12 +2746,12 @@ AS
 select c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega and estatistica_cotacao.codcli = c.codcli and estatistica_cotacao.unidade in (1,2)))
 from estatistica_cotacao c where st IN (1,2,6) and unidade in (1,2)
-group by c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente
-;
-
-
-
-/* View: COTACOES_REALIZADAS_PLA */
+group by c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente;
+--================================================================================================================
+/**
+    0084
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS_PLA*/
 CREATE VIEW COTACOES_REALIZADAS_PLA(
     ANO,
     MES,
@@ -2762,12 +2763,12 @@ select c.ano, c.mes, c.mes_entrega, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega and estatistica_cotacao.unidade in (3,4)))
 from estatistica_cotacao c where st IN (1,2,6)
 and unidade in (3,4)
-group by c.ano, c.mes, c.mes_entrega
-;
-
-
-
-/* View: COTACOES_REALIZADAS_PLA_CLIENTE */
+group by c.ano, c.mes, c.mes_entrega;
+--================================================================================================================
+/**
+    0084
+    Status = ok
+    *//*View:  COTACOES_REALIZADAS_PLA_CLIENTE*/
 CREATE VIEW COTACOES_REALIZADAS_PLA_CLIENTE(
     ANO,
     MES,
@@ -2780,12 +2781,12 @@ AS
 select c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente, count(numped),
 (SELECT COUNT(NUMPED) FROM ESTATISTICA_COTACAO WHERE (estatistica_cotacao.enviado_cliente IS not NULL and estatistica_cotacao.mes_entrega = c.mes_entrega and estatistica_cotacao.codcli = c.codcli and estatistica_cotacao.unidade in (3,4)))
 from estatistica_cotacao c where st IN (1,2,6) and unidade in (3,4)
-group by c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente
-;
-
-
-
-/* View: COTCOMPRA */
+group by c.ano, c.mes, c.mes_entrega, c.codcli, c.nome_cliente;
+--================================================================================================================
+/**
+    0085
+    Status = ok
+    *//*View:  COTCOMPRA*/
 CREATE VIEW COTCOMPRA(
     IDCOT,
     DATACOT,
@@ -2820,12 +2821,12 @@ a.idcot, a.datacot, a.refcot, a.codigoitem, a.descitem, a.undcompra, a.qtde, a.p
 b.iditemcot, b.nidcot, b.codfor, b.nomefor, b.preco, b.prazo, b.condicoes, b.valorfrete, b.obs, b.aprovacao, b.aprovado,
 c.usernome, d.nomesetor
 from tbcot a left join tbcotitem b on (idcot = nidcot) left join tb_user c on (a.requisitante = c.userid)
-left join tbsetor d on (a.setor = d.idsetor)
-;
-
-
-
-/* View: COTFINAL */
+left join tbsetor d on (a.setor = d.idsetor);
+--================================================================================================================
+/**
+    0085
+    Status = ok
+    *//*View:  COTFINAL*/
 CREATE VIEW COTFINAL(
     NUMPED,
     CODCLI,
@@ -2945,12 +2946,12 @@ WHEN 1 THEN 'COTA��O FECHADA'
 WHEN 2 THEN 'PEDIDO ABERTO'
 WHEN 3 THEN 'PEDIDO FECHADO' ELSE 'COTAC�O ABERTA '
 end
-from TBPROP LEFT join COTACAO2  on (TBPROP.numped = COTACAO2.idnumped)
-;
-
-
-
-/* View: RESERVAS_ESTOQUE */
+from TBPROP LEFT join COTACAO2  on (TBPROP.numped = COTACAO2.idnumped);
+--================================================================================================================
+/**
+    0086
+    Status = ok
+    *//*View:  RESERVAS_ESTOQUE*/
 CREATE VIEW RESERVAS_ESTOQUE(
     DATA,
     STATUS,
@@ -2962,12 +2963,12 @@ CREATE VIEW RESERVAS_ESTOQUE(
 AS
 select TB_OS.data, TB_OS.status, codigomat, os, und, lote, sum(movimento.qtdereserv)
 from movimento left JOIN tb_os ON (MOVIMENTO.os = TB_OS.numero_os) where movimento.cod_parametro = '03.10' and movimento.datalanc >='01.08.2012'
-group by TB_OS.DATA, TB_OS.status , codigomat, os, und, lote, cod_parametro
-;
-
-
-
-/* View: SAIDAS_ESTOQUE */
+group by TB_OS.DATA, TB_OS.status , codigomat, os, und, lote, cod_parametro;
+--================================================================================================================
+/**
+    0087
+    Status = ok
+    *//*View:  SAIDAS_ESTOQUE*/
 CREATE VIEW SAIDAS_ESTOQUE(
     CODIGO,
     OS,
@@ -2978,12 +2979,13 @@ AS
 select codigomat, os, und, lote, sum(movimento.qtd_mov)
 from movimento where movimento.grupo = 2 and movimento.datalanc >='01.08.2012'
 AND MOVIMENTO.os > 0
-group by codigomat, os, und, lote, cod_parametro
-;
-
-
-
-/* View: CRITICA_OS */
+group by codigomat, os, und, lote, cod_parametro;
+--================================================================================================================
+/**
+    0087
+    Status = ok
+    Modificado por: Gerson
+    *//*View:  CRITICA_OS*/
 CREATE VIEW CRITICA_OS(
     DATA,
     STATUS,
@@ -3006,12 +3008,13 @@ b.qtd
 end)
 from reservas_estoque a left join saidas_estoque b
 on (a.codigo = b.codigo and a.os = b.os and a.lote=b.lote)
-order by a.os,  a.codigo, a.lote
-;
-
-
-
-/* View: CRONOGRAMA_AUDITORIA_PRODUTO */
+--order by a.os,  a.codigo, a.lote;
+--================================================================================================================
+/**
+    0088
+    Status = ok
+    Modificado por: Gerson
+    *//*View:  CRONOGRAMA_AUDITORIA_PRODUTO*/
 CREATE VIEW CRONOGRAMA_AUDITORIA_PRODUTO(
     CODIGO,
     DESCRICAO,
@@ -3043,12 +3046,13 @@ from tb_auditoria_produto b where b.id = (select max(tb_auditoria_produto.id) fr
 (select
 c.observacao
 from tb_auditoria_produto c where c.id = (select max(tb_auditoria_produto.id) from tb_auditoria_produto where tb_auditoria_produto.item = a.codigoitem))
-from tbitens a where a.tipoitem in ('PRODUTO ACABADO','COMPONENTE FABRICADO') order by a.codigoitem
-;
-
-
-
-/* View: ULTIMA_PREVENTIVA_FERRAMENTA */
+from tbitens a where a.tipoitem in ('PRODUTO ACABADO','COMPONENTE FABRICADO') order by a.codigoitem;
+--================================================================================================================
+/**
+    0089
+    Status = ok
+    Modificado por: Gerson
+    *//*View:  ULTIMA_PREVENTIVA_FERRAMENTA*/
 CREATE VIEW ULTIMA_PREVENTIVA_FERRAMENTA(
     CODIGO,
     OM,
@@ -3056,8 +3060,7 @@ CREATE VIEW ULTIMA_PREVENTIVA_FERRAMENTA(
 AS
 select a.codigo, max(a.n_cont), cast(max(a.data_encerrada) as timestamp)
 from tb_om a
-where a.tipo_manut = 2 and a.natureza_manut = 2 group by codigo
-;
+where a.tipo_manut = 2 and a.natureza_manut = 2 group by codigo;
 
 
 
@@ -3146,8 +3149,7 @@ from estrut_os a left join tb_os b on (a.n_os = b.numero_os)
 left join tbitens c on (a.produto = c.codigoitem)
 left join tbarvoreproc d on (a.idproc = d.idarvproc)
 left join tbrecurso e on (a.rec_1 = e.idrec)
-order by a.seq
-;
+order by a.seq;
 
 
 
